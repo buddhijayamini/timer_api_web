@@ -43,7 +43,7 @@ class TimerController extends Controller
         DB::beginTransaction();
         try {
             $data = [];
-            $randomNumber = random_int(0, 999999);
+            $randomNumber = $this->generateUniqueCode();
             $qty = $request->number;
             $exTime = $request->timer;
 
@@ -61,27 +61,46 @@ class TimerController extends Controller
             for($i=0; $i<$qty; $i++)
             {
                 array_push($data,$randomNumber);
+                $randomNumber++;
+
+                ini_set('max_execution_time', $exTime);
+
+                $timer = new Timer();
+                $timer->unique_code = $randomNumber;
+                $timer->save();
             }
 
-            $collection = collect($data);
-            $chunks = $collection->chunk(1);
-            $chunks->toArray();
+            // $collection = collect($data);
+            // $chunks = $collection->chunk(1);
+            // $chunks->toArray();
 
-            foreach($chunks as $chunk)
-            {
-                 ini_set('max_execution_time', $exTime);
-                 Timer::create([
-                    'unique_code' => $randomNumber,
-                   ]);
-            }
+            // foreach($chunks as $chunk)
+            // {
+            //      ini_set('max_execution_time', $exTime);
+            //      $timer = new Timer();
+            //      $timer->unique_code = $chunk;
+            //      $timer->save();
+            //     //  Timer::create([
+            //     //     'unique_code' => $chunk[0],
+            //     //    ]);
+            // }
 
             DB::commit();
 
-            return response()->json($chunks);
+            return response()->json($timer->all());
         } catch (Exception $e) {
             return $e;
         }
 
+    }
+
+    public function generateUniqueCode()
+    {
+        do{
+            $randomNumber = random_int(1111111, 9999999);
+        }while (Timer::where('unique_code', $randomNumber)->first());
+
+        return  $randomNumber;
     }
 
     /**

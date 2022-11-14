@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('tbl_timers', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->double('unique_code');
+            $table->double('unique_code')->unique();
             $table->dateTime('created_at')->useCurrent();
             $table->dateTime('updated_at')->nullable();
         });
