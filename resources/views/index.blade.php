@@ -31,20 +31,15 @@
  <script>
     function myFunction(){
         var val1 = document.getElementById('number').value;
-        //var val2 = document.getElementById('timer').value;
 
             if(val1 <= 50000){
-              //  setTimeout(function(){
-                   // console.log('running') ;
-               // }, 2000);
-                document.getElementById('timer').value = 2;
-               // console.log(val2);
+                document.getElementById('timer').value = 30;
             }
             if(val1 >= 50001 && val1 <= 100000){
-                 document.getElementById('timer').value = 4;
+                 document.getElementById('timer').value = 60;
             }
             if(val1 >= 100001 && val1 <= 150000){
-                  document.getElementById('timer').value = 6;
+                  document.getElementById('timer').value = 120;
             }
         }
 </script>

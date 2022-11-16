@@ -46,16 +46,14 @@ class TimerController extends Controller
             $randomNumber = $this->generateUniqueCode();
             $qty = $request->number;
             $exTime = $request->timer;
+            ini_set('memory_limit', '1024M');
 
             if ( $qty <= 50000) {
-                //$qty = 50000;
-                $exTime = 2;
+                $exTime = 30;
             }else if( $qty >= 50001 && $qty <= 100000) {
-              //  $qty = 100000;
-                $exTime = 4;
+                $exTime = 60;
             }else if( $qty >= 100001 && $qty <= 150000) {
-              //  $qty = 150000;
-                $exTime = 6;
+                $exTime = 120;
             }
 
             for($i=0; $i<$qty; $i++)
@@ -73,14 +71,15 @@ class TimerController extends Controller
                 $randomNumber++;
                 ini_set('max_execution_time', $exTime);
 
-                $timer = Timer::create([
+              Timer::create([
                             'unique_code' => $randomNumber,
                            ]);
              }
 
             DB::commit();
 
-            return response()->json($timer->all());
+            $timer1 = Timer::all();
+            return response()->json($timer1);
         } catch (Exception $e) {
             return $e;
         }
