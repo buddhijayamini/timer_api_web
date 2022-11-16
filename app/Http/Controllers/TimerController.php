@@ -62,28 +62,21 @@ class TimerController extends Controller
             {
                 array_push($data,$randomNumber);
                 $randomNumber++;
-
-                ini_set('max_execution_time', $exTime);
-
-                $timer = new Timer();
-                $timer->unique_code = $randomNumber;
-                $timer->save();
             }
 
-            // $collection = collect($data);
-            // $chunks = $collection->chunk(1);
-            // $chunks->toArray();
+            $collection = collect($data);
+            $chunks = $collection->chunk(1);
+            $chunks->toArray();
 
-            // foreach($chunks as $chunk)
-            // {
-            //      ini_set('max_execution_time', $exTime);
-            //      $timer = new Timer();
-            //      $timer->unique_code = $chunk;
-            //      $timer->save();
-            //     //  Timer::create([
-            //     //     'unique_code' => $chunk[0],
-            //     //    ]);
-            // }
+            foreach($chunks as $chunk)
+             {
+                $randomNumber++;
+                ini_set('max_execution_time', $exTime);
+
+                $timer = Timer::create([
+                            'unique_code' => $randomNumber,
+                           ]);
+             }
 
             DB::commit();
 
